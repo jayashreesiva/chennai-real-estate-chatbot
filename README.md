@@ -191,6 +191,9 @@ in the current knowledge base.
 
 It should not invent an amenity.
 
+link: https://jayashreesiva.github.io/chennai-real-estate-chatbot/
+
+screenshot:
 <img width="1762" height="797" alt="Screenshot 2026-09-24 212430" src="https://github.com/user-attachments/assets/18406acb-d2ca-4379-8bdb-2acfffaf94d1" />
 <img width="1737" height="972" alt="Screenshot 2026-09-24 213729" src="https://github.com/user-attachments/assets/79bd1f53-e607-4733-aed3-b09b2d5896bb" />
 <img width="1830" height="886" alt="Screenshot 2026-09-24 213858" src="https://github.com/user-attachments/assets/f469d731-7a4f-49ec-8c4c-8335d25d20aa" />
