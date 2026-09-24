@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chennai Real Estate AI</title>
+<style>
+:root{--green:#198754;--green2:#34a853;--mint:#eaf8f0;--navy:#102a43;--text:#17324d;--muted:#6b7f93;--bg:#f5faf7;--border:#dcebe2}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#f7fbf8,#edf8f1);color:var(--text)}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 5%}
+.brand{font-size:22px;font-weight:800;color:var(--navy)}.brand span{font-size:28px;margin-right:8px}
+select{padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:white;color:var(--text)}
+main{max-width:1120px;margin:auto;padding:38px 22px 60px}.hero{text-align:center;padding:18px 0 20px}.hero h1{font-size:44px;margin:4px 0 9px;color:var(--navy)}.hero h1 span{color:var(--green)}.hero p{font-size:17px;color:var(--muted);margin:0}
+.chatbox{background:white;border:1px solid var(--border);border-radius:24px;padding:20px;box-shadow:0 14px 38px rgba(16,42,67,.10)}
+.messages{height:330px;overflow-y:auto;padding:2px 5px 8px}.msg{max-width:82%;padding:13px 16px;border-radius:17px;margin:10px 0;line-height:1.5}.bot{background:#f0f5f2;border-left:4px solid var(--green)}.user{margin-left:auto;background:#e1f3e8;border-right:4px solid var(--green2)}
+.inputrow{display:flex;gap:9px;margin-top:14px;position:sticky;bottom:0;background:white;padding-top:8px}.inputrow input{flex:1;padding:15px 16px;border:1px solid #cfe2d6;border-radius:14px;font-size:16px;outline:none}
+button{border:0;border-radius:13px;padding:13px 17px;font-weight:700;cursor:pointer}.search{background:var(--green);color:#fff;min-width:105px}.speak{background:#e7f6ed;color:#146c43;border:1px solid #bfe5ce}.speak.listening{background:#fff3cd;color:#8a6500;border-color:#f1d98a}
+.status{font-size:12px;color:var(--muted);margin-top:7px}.listen{background:#e8f7ef;color:#146c43;border:1px solid #c2e6d1;padding:7px 10px;margin-left:7px}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:28px 0 14px}.section-title h2{margin:0;color:var(--navy)}
+.badge{display:inline-block;background:var(--mint);color:#167347;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:700}
+.results{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.property{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(16,42,67,.07)}
+.property img{width:100%;height:190px;object-fit:cover}.property-body{padding:17px}.property h3{margin:10px 0 5px;font-size:20px;color:var(--navy)}.price{font-size:20px;font-weight:800;color:var(--green);margin:8px 0}.meta{color:var(--muted);font-size:14px;line-height:1.7}.view{margin-top:12px;width:100%;background:var(--navy);color:#fff}
+.detail{display:none;background:white;border:1px solid var(--border);border-radius:24px;box-shadow:0 14px 38px rgba(16,42,67,.10);padding:20px;margin-top:24px}.back{background:#e9f6ee;color:#146c43;border:1px solid #bfe3cc;margin-bottom:15px}
+.gallery{display:grid;grid-template-columns:2fr 1fr;gap:10px}.gallery img{width:100%;height:260px;object-fit:cover;border-radius:16px}.gallery .side{display:grid;gap:10px}.gallery .side img{height:125px}
+.detail h2{color:var(--navy);font-size:30px;margin:20px 0 7px}.locationline{color:#526d83;font-size:16px}.detailgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:20px}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.info{background:#f5f9f7;border:1px solid #e0eee5;border-radius:14px;padding:14px}.info small{color:var(--muted);display:block;margin-bottom:5px}
+.facilities{margin-top:22px}.facility-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.fac{background:#f7faf8;border:1px solid var(--border);padding:13px;border-radius:13px}.fac b{color:var(--navy)}.transport{margin-top:10px;background:#eef8f2;border:1px solid #cde8d7;border-radius:13px;padding:13px}
+.broker{margin-top:18px;background:linear-gradient(135deg,#eaf8f0,#f8fcfa);border:1px solid #cce8d7;border-radius:17px;padding:16px}.demo-label{font-size:11px;color:#6b7f93;margin-top:5px}
+.map{min-height:300px;border-radius:18px;background:#e7f3ea;border:1px dashed #8cc9a4;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px}.map a{display:inline-block;margin-top:12px;background:var(--green);color:#fff;text-decoration:none;padding:10px 14px;border-radius:10px}
+@media(max-width:800px){.results,.detailgrid{grid-template-columns:1fr}.hero h1{font-size:34px}.inputrow{flex-wrap:wrap}.inputrow input{flex-basis:100%}}
+</style>
+</head>
+<body>
+<header>
+<div class="brand"><span>🏠</span>Chennai Real Estate AI</div>
+<select id="language"><option value="en-IN">English</option><option value="ta-IN">தமிழ்</option><option value="hi-IN">हिन्दी</option></select>
+</header>
+
+<main>
+<section class="hero">
+<h1>Find Your <span>Next Property</span></h1>
+<p>AI-powered property search with RAG, conversation memory, multilingual voice and nearby facilities.</p>
+</section>
+
+<section class="chatbox">
+<div class="messages" id="messages">
+<div class="msg bot" data-speech="Hi! Welcome to Chennai Real Estate AI. How can I help you today?">
+👋 Hi! Welcome to Chennai Real Estate AI. How can I help you today?
+<button class="listen" onclick="speakText(this.parentElement.dataset.speech)">🔊 Listen</button>
+</div>
+</div>
+
+<div class="inputrow">
+<input id="query" placeholder="Ask about properties, prices, locations or nearby facilities">
+<button class="speak" id="speakBtn" onclick="startVoice()">🎙️ Speak</button>
+<button class="search" onclick="sendMessage()">Ask</button>
+</div>
+<div class="status" id="voiceStatus">Voice input: ready</div>
+</section>
+
+<div class="section-title" id="resultsTitle">
+<h2>🔎 Matching Properties</h2><span class="badge" id="resultCount">4 results</span>
+</div>
+
+<section class="results" id="results"></section>
+<section class="detail" id="detail"></section>
+</main>
+
+<script>
+const properties=[
+{ id:"PROP-001",name:"Greenleaf Garden Residence",price:"₹72 Lakhs",bhk:3,area:"1450 sq.ft",bath:3,type:"Independent House",status:"Ready to Move",builder:"Greenleaf Homes",location:"Anna Nagar, Chennai",query:"Anna Nagar, Chennai",image:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80",img2:"https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=700&q=80",img3:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=700&q=80",schools:["DAV Boys Senior Secondary School – Anna Nagar","Chinmaya Vidyalaya – Anna Nagar"],college:"Shri Krishnaswamy College for Women",hospital:"Apollo First Med Hospitals – Anna Nagar",supermarket:"Nilgiris – Anna Nagar",transport:"Anna Nagar East Metro • MTC bus services",broker:"Arjun Kumar",phone:"+91 90000 12345"},
+{ id:"PROP-002",name:"Emerald Park Residency",price:"₹76 Lakhs",bhk:3,area:"1520 sq.ft",bath:3,type:"Apartment",status:"Ready to Move",builder:"Emerald Living",location:"Anna Nagar West, Chennai",query:"Anna Nagar West, Chennai",image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",img2:"https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=700&q=80",img3:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=700&q=80",schools:["Chennai Public School – Anna Nagar","SBOA Matriculation & Higher Secondary School"],college:"Anna Adarsh College for Women",hospital:"Sundaram Medical Foundation",supermarket:"Reliance SMART – Anna Nagar",transport:"Thirumangalam Metro • MTC bus services",broker:"Meena Ravi",phone:"+91 90000 12346"},
+{ id:"PROP-003",name:"Maple Grove Villa",price:"₹79 Lakhs",bhk:3,area:"1600 sq.ft",bath:3,type:"Villa",status:"Resale",builder:"Maple Estates",location:"Anna Nagar East, Chennai",query:"Anna Nagar East, Chennai",image:"https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",img2:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=700&q=80",img3:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=700&q=80",schools:["Jaigopal Garodia Vivekananda Vidyalaya","SBOA School & Junior College"],college:"Shri Krishnaswamy College for Women",hospital:"Chennai Meenakshi Multispeciality Hospital",supermarket:"More Supermarket – Anna Nagar",transport:"Anna Nagar East Metro • MTC bus services",broker:"Vikram S",phone:"+91 90000 12347"},
+{ id:"PROP-004",name:"Lakeview Green Villa",price:"₹80 Lakhs",bhk:3,area:"1700 sq.ft",bath:3,type:"Independent Villa",status:"Ready to Move",builder:"Lakeview Builders",location:"Anna Nagar 2nd Avenue, Chennai",query:"Anna Nagar 2nd Avenue, Chennai",image:"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",img2:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80",img3:"https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=700&q=80",schools:["Chinmaya Vidyalaya – Anna Nagar","DAV Matriculation Higher Secondary School"],college:"Anna Adarsh College for Women",hospital:"Apollo First Med Hospitals – Anna Nagar",supermarket:"Nilgiris – Anna Nagar",transport:"Shenoy Nagar Metro • MTC bus services",broker:"Priya N",phone:"+91 90000 12348"}
+];
+
+const messages=document.getElementById("messages"),input=document.getElementById("query"),status=document.getElementById("voiceStatus"),lang=document.getElementById("language");
+
+function renderResults(list=properties){
+document.getElementById("resultCount").textContent=list.length+" results";
+document.getElementById("results").innerHTML=list.map((p,i)=>`
+<article class="property">
+<img src="${p.image}" alt="${p.name}">
+<div class="property-body">
+<span class="badge">${p.id}</span><h3>${p.name}</h3>
+<div class="price">${p.price}</div>
+<div class="meta">${p.bhk} BHK • ${p.area} • ${p.bath} bathrooms<br>${p.location} • ${p.status}</div>
+<button class="view" onclick="showDetail(${i})">View Property</button>
+</div></article>`).join("");
+}
+renderResults();
+
+function speakText(text){
+if(!("speechSynthesis" in window)){status.textContent="Voice output is not supported in this browser.";return;}
+speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang.value;u.rate=.95;speechSynthesis.speak(u);status.textContent="🔊 Playing voice response...";u.onend=()=>status.textContent="Voice output: ready";
+}
+function addMessage(visibleText,type="bot",speechText=visibleText){
+const d=document.createElement("div");d.className="msg "+type;d.dataset.speech=speechText;
+d.appendChild(document.createTextNode(visibleText));
+if(type==="bot"){const b=document.createElement("button");b.className="listen";b.textContent="🔊 Listen";b.onclick=()=>speakText(speechText);d.appendChild(b);}
+messages.appendChild(d);messages.scrollTop=messages.scrollHeight;
+}
+function sendMessage(){
+const q=input.value.trim();if(!q)return;addMessage(q,"user",q);input.value="";
+const l=q.toLowerCase();
+setTimeout(()=>{
+if(/^(hi|hello|hey|good morning|good afternoon|good evening)\b/.test(l)){
+let r=l.includes("good morning")?"Good morning! How can I help you find a property today?":"Hi! How can I help you with Chennai properties today?";
+addMessage(r,"bot",r);
+}else if(l.includes("thank")){addMessage("You're welcome! I'm happy to help.","bot","You're welcome! I'm happy to help.");}
+else if(l.includes("which is cheaper")||l.includes("cheaper")){
+addMessage("Greenleaf Garden Residence is the lowest-priced option in the current results at ₹72 Lakhs.","bot","Greenleaf Garden Residence is the lowest-priced option in the current results at 72 Lakhs.");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+}else if(l.includes("3 bhk")||l.includes("three bhk")||l.includes("velachery")||l.includes("anna nagar")||l.includes("properties")){
+addMessage("I found 4 matching properties.","bot","I found 4 matching properties.");
+document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});
+}else if(l.includes("school")||l.includes("hospital")||l.includes("college")||l.includes("transport")){
+addMessage("I can show the nearby facilities inside each property's View Property page.","bot","I can show the nearby facilities inside each property's View Property page.");
+}else{addMessage("I found 4 matching properties.","bot","I found 4 matching properties.");}
+},250);
+}
+function showDetail(i){
+const p=properties[i];
+document.getElementById("results").style.display="none";document.getElementById("resultsTitle").style.display="none";
+document.getElementById("detail").style.display="block";
+document.getElementById("detail").innerHTML=`
+<button class="back" onclick="hideDetail()">← Back to results</button>
+<div class="gallery"><img src="${p.image}" alt="${p.name}"><div class="side"><img src="${p.img2}" alt=""><img src="${p.img3}" alt=""></div></div>
+<h2>${p.name}</h2><div class="locationline">📍 ${p.location} • <b>${p.price}</b></div>
+<div class="detailgrid"><div><h3>Property Information</h3>
+<div class="info-grid"><div class="info"><small>BHK</small><b>${p.bhk}</b></div><div class="info"><small>Area</small><b>${p.area}</b></div><div class="info"><small>Bathrooms</small><b>${p.bath}</b></div><div class="info"><small>Status</small><b>${p.status}</b></div><div class="info"><small>Property Type</small><b>${p.type}</b></div><div class="info"><small>Builder</small><b>${p.builder}</b></div></div>
+<div class="facilities"><h3>Nearby Facilities</h3><div class="facility-grid">
+<div class="fac">🏫 <b>Schools</b><br>${p.schools[0]}<br>${p.schools[1]}</div>
+<div class="fac">🎓 <b>College</b><br>${p.college}</div>
+<div class="fac">🏥 <b>Hospital</b><br>${p.hospital}</div>
+<div class="fac">🛒 <b>Supermarket</b><br>${p.supermarket}</div>
+</div><div class="transport">🚇 <b>Local Transport</b><br>${p.transport}</div></div>
+<div class="broker"><b>🤝 Broker Information</b><br>Name: ${p.broker}<br>Broker ID: BRK-${1024+i}<br>Contact: ${p.phone}<div class="demo-label">Demo contact number for prototype testing — final project will use broker data from the database.</div></div>
+</div>
+<div><h3>📍 Property Location</h3><div class="map"><div><div style="font-size:45px">📍</div><b>${p.location}</b><p>Area-level location shown for this prototype. Exact property coordinates will only be displayed when verified coordinates exist in the dataset.</p><a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.query)}">Open this location in Google Maps ↗</a></div></div></div></div>`;
+window.scrollTo({top:0,behavior:"smooth"});
+}
+function hideDetail(){document.getElementById("detail").style.display="none";document.getElementById("results").style.display="grid";document.getElementById("resultsTitle").style.display="flex";document.getElementById("results").scrollIntoView({behavior:"smooth",block:"start"});}
+function startVoice(){
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){status.textContent="Voice input is not supported here. Try Google Chrome.";return;}
+const r=new SR();r.lang=lang.value;r.interimResults=false;r.maxAlternatives=1;const b=document.getElementById("speakBtn");b.classList.add("listening");b.textContent="⏹️ Listening...";status.textContent="🎙️ Listening... speak now";r.start();
+r.onresult=e=>{input.value=e.results[0][0].transcript;status.textContent="Voice captured.";setTimeout(sendMessage,250)};
+r.onerror=e=>status.textContent="Voice input error: "+e.error+". Please allow microphone permission.";
+r.onend=()=>{b.classList.remove("listening");b.textContent="🎙️ Speak";if(status.textContent.includes("Listening"))status.textContent="Voice input: ready";}
+}
+input.addEventListener("keydown",e=>{if(e.key==="Enter")sendMessage()});
+</script>
+</body>
+</html>
